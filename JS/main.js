@@ -2,7 +2,7 @@
 var count = 0
 
 function gameLoop() {
-    document.write(count)
+    document.getElementById("test1").innerHTML = count
     count++
 
 }
