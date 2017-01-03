@@ -1,3 +1,31 @@
 ﻿body {
     background-color: black;
 }
+
+
+#frame-counter {
+    position:fixed;
+    color:red;
+    font-size:small;
+    bottom:0;
+    right:0;
+}
+
+#console {
+    position:fixed;
+    color:red;
+    font-size:small;
+    top:0;
+    right:0;
+}
+
+.button {
+    background-color: red;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
