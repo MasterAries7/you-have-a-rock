@@ -3,9 +3,11 @@ var frame_count = 0;
 var rock_count = 1;
 var innovation = 0;
 var fireFlag = false;
-var researchFlags = [false];
 
-// researchFlags( 0 = FIRE )
+var researchFlags = [false];
+var researchCost = [100];
+var researchNames = ["FIRE"];
+
 
 function gameLoop() {
     document.getElementById("frame-counter").innerHTML = (frame_count % 40) + 1;
@@ -27,6 +29,15 @@ function Draw() {
         } else {
             document.getElementById("bangRocksButton").style.display = 'none';
         }
+    }
+
+    //draw research panel
+
+    if ((fireFlag) && (!researchFlags[0])) {
+        document.getElementById("research0Button").style.display = 'initial';
+        document.getElementById("research0Button").innerHTML = researchNames[0];
+    } else {
+        document.getElementById("research0Button").style.display = 'none';
     }
 
     //draw variableStack
@@ -61,6 +72,15 @@ function bangRocks() {
         if (!fireFlag) {
             fireFlag = true;
         }
+    }
+}
+
+function buyResearch(x){
+    if (innovation >= researchCost[0]) {
+        innovation = innovation - researchCost[0];
+        researchFlags[0] = true;
+    } else {
+        document.getElementById("console").innerHTML = "You lack the necessary understanding.";
     }
 }
 
