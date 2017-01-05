@@ -3,16 +3,36 @@ var frame_count = 0;
 var rock_count = 1;
 var innovation = 0;
 var fireFlag = false;
+var consoleLength = 20;
+
+var consoleStrings = [];
 
 var researchFlags = [false];
 var researchCost = [100];
 var researchNames = ["FIRE"];
+var researchConsoleBlurb = ["You strike a spark, it ignites some dried leaves for a moment.  You must find more."]
+
+initConsole();
+
+function initConsole() {
+    consoleStrings[0] = "You have a rock."
+    for (a = 1; a <= consoleLength; a++) {
+        consoleStrings[a] = "";
+    }
+}
 
 
 function gameLoop() {
     document.getElementById("frame-counter").innerHTML = (frame_count % 40) + 1;
     frame_count++;
     Draw();
+}
+
+function consoleInput(str) {
+    for (z = consoleLength; z > 0 ; z--) {
+        consoleStrings[z] = consoleStrings[z - 1];
+    }
+    consoleStrings[0] = str;
 }
 
 function Draw() {
@@ -43,14 +63,25 @@ function Draw() {
     //draw variableStack
     document.getElementById("variableStack").innerHTML = "Rock Count = " + rock_count + "</br>" + "Innovation = " + innovation + "</br>";
 
+    //draw the console
+    drawConsole();
+}
+
+function drawConsole() {
+    var outputString = "";
+    for (z = consoleLength-1; z >= 0; z--) {
+        outputString += consoleStrings[z];
+        outputString += "</br>"
+    }
+    document.getElementById("console").innerHTML = outputString;
 }
 
 function lookAround() {
     var rando = Math.random()
     if (rando < .75) {
-        document.getElementById("console").innerHTML = "You look around for a while, but find nothing interesting.";
+        consoleInput("You look around for a while, but find nothing interesting.");
     } else {
-        document.getElementById("console").innerHTML = "You look around for a while, and find another rock.";
+        consoleInput("You look around for a while, and find another rock.");
         rock_count++;
     }
 }
@@ -58,16 +89,16 @@ function lookAround() {
 function bangRocks() {
     var rando = Math.random()
     if (rando < .25) {
-        document.getElementById("console").innerHTML = "You bang two rocks together, hit your thumb, it hurt.";
+        consoleInput("You bang two rocks together, hit your thumb, it hurt.");
         innovation++;
     } else if ((rando >= .25) && (rando < .5)) {
-        document.getElementById("console").innerHTML = "You bang two rocks together, it makes a lound clack.";
+        consoleInput("You bang two rocks together, it makes a lound clack.");
         innovation = innovation + 2;
     } else if ((rando >= .5) && (rando < .9)) {
-        document.getElementById("console").innerHTML = "You bang two rocks together, fail miserably, and drop your rocks.";
+        consoleInput("You bang two rocks together, fail miserably, and drop your rocks.");
         innovation--;
     } else {
-        document.getElementById("console").innerHTML = "You bang two rocks together, a spark is created, it is wonderous.";
+        consoleInput("You bang two rocks together, a spark is created, it is wonderous.");
         innovation = innovation + 5;
         if (!fireFlag) {
             fireFlag = true;
@@ -76,11 +107,12 @@ function bangRocks() {
 }
 
 function buyResearch(x){
-    if (innovation >= researchCost[0]) {
-        innovation = innovation - researchCost[0];
-        researchFlags[0] = true;
+    if (innovation >= researchCost[x]) {
+        innovation = innovation - researchCost[x];
+        researchFlags[x] = true;
+        consoleInput(researchConsoleBlurb[x])
     } else {
-        document.getElementById("console").innerHTML = "You lack the necessary understanding.";
+        consoleInput("You lack the necessary understanding.");
     }
 }
 
